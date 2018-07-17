@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="script/lib/vue-2.js"></script>
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+<section id="_page">
+    <h1>{{title}}</h1>
+    <form v-on:submit="onSubmit">
+        <div>
+            <label> userName:</label>
+            <input type="text" v-model="form.userName" required>
+        </div>
+        <div>
+            <label>jobName:</label>
+            <input type="text" v-model="form.jobName" required>
+        </div>
+        <div>
+            <label>select:</label>
+            <select v-model="form.select">
+                <option value="" disabled>请选择</option>
+              <option v-for="item in selectArray">{{item}}</option>
+            </select>
+        </div>
+        <div>
+            <label>checkBox</label>
+
+            <c-box v-for="item in selectArray" v-bind:txt="item" v-bind:`model="form.checkbox"></c-box>
+
+        </div>
+        <div>
+            <button type="submit">保留</button>
+        </div>
+    </form>
+
+    <p>
+        输入内容：{{form}}
+    </p>
+</section>
+<script type="text/javascript">
+    Vue.component("c-box",{
+        props:["txt","model"],
+        template:"<span><input type=\"checkbox\" v-model='model' v-bind:value=\"txt\"/><label>{{txt}}</label></span>"
+    })
+    var app = new Vue({
+        el: "#_page",
+        data: {
+            title: "First Vue.js",
+            form:{
+
+            },
+            selectArray:["First","Second","Three"]
+        },
+        methods: {
+            onSubmit:function (e) {
+                e.preventDefault();
+            }
+        },
+        watch: {},
+        computed: {}
+    });
+    app.form.toString=function(){
+        return JSON.stringify(this);
+    }
+    app.selectArray=["First","Second","Three"];
+</script>
+</body>
+</html>
