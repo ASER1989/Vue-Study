@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <script src="script/lib/vue-2.js"></script>
-    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="./css/index.css">
 </head>
 <body>
 <section id="_page">
@@ -22,14 +22,18 @@
             <label>select:</label>
             <select v-model="form.select">
                 <option value="" disabled>请选择</option>
-              <option v-for="item in selectArray">{{item}}</option>
+                <option v-for="item in selectArray">{{item}}</option>
             </select>
         </div>
         <div>
-            <label>checkBox</label>
+            <label>checkBox:</label>
 
-            <c-box v-for="item in selectArray" v-bind:txt="item" v-bind:`model="form.checkbox"></c-box>
+            <check-box v-for="(item,i) in selectArray" :txt="item" v-model="form.checkbox[i]" :idx="i"></check-box>
 
+        </div>
+        <div>
+            <label>raidos:</label>
+            <radio-el v-for="(item,i) in selectArray" :txt="item" v-model="form.radio" :idx="i" :value="form.radio"></radio-el>
         </div>
         <div>
             <button type="submit">保留</button>
@@ -40,32 +44,82 @@
         输入内容：{{form}}
     </p>
 </section>
+
+<template id="_radio_temp">
+    <!--
+        'v-on:'   简写'@'
+        'v-bind:' 简写':'
+        默认选中：设置model的值=radio的值
+        不设置radio的name会出现没有单选效果的bug（是单选，但也不是单选）
+
+        组件实现v-model
+            1、内部的v-model='model'中的model是当前组件中的变量model
+            2、通过当前组件中控件的chang（keyup，mouseover）等相关事件调用this.$emit('input',e.target.value)执行消息通知
+            3、组件中的value参数，主要用于组件model初始值设定
+    --->
+    <span class="ckbox-group">
+        <input type="radio" name="radio" v-model="model" v-on:change="change" v-bind:value="txt" :id="nid">
+        <label :for="nid">{{txt}}</label>
+    </span>
+</template>
 <script type="text/javascript">
-    Vue.component("c-box",{
-        props:["txt","model"],
-        template:"<span><input type=\"checkbox\" v-model='model' v-bind:value=\"txt\"/><label>{{txt}}</label></span>"
+
+
+    Vue.component("check-box", {
+        props: ["txt", "value", "idx"],
+        template: "<span class='ckbox-group'><input type=\"checkbox\" v-model='model' @change='change' v-bind:value=\"txt\" v-bind:id='nidx'/><label v-bind:for='nidx'>{{txt}}</label></span>",
+        data: function () {
+            return {
+                model: this.value,
+                nidx: "__ckbox_" + this.idx
+            }
+        },
+        methods: {
+            change: function (e) {
+                var value = e.target.value;
+                this.$emit('input', value);
+            }
+        }
+    });
+
+    Vue.component("radio-el", {
+        props: ['txt', 'value', 'idx'],
+        data: function () {
+            return {
+                model: this.value,
+                nid: "__radio_" + this.idx
+            }
+        },
+        methods: {
+            change: function (e) {
+                this.$emit('input', e.target.value);
+            }
+        },
+        template: "#_radio_temp"
     })
+
     var app = new Vue({
         el: "#_page",
         data: {
             title: "First Vue.js",
-            form:{
-
+            form: {
+                checkbox: [],
+                radio:"Second"
             },
-            selectArray:["First","Second","Three"]
+            selectArray: ["First", "Second", "Three"]
         },
         methods: {
-            onSubmit:function (e) {
+            onSubmit: function (e) {
                 e.preventDefault();
             }
         },
         watch: {},
         computed: {}
     });
-    app.form.toString=function(){
+    app.form.toString = function () {
         return JSON.stringify(this);
     }
-    app.selectArray=["First","Second","Three"];
+    app.selectArray = ["First", "Second", "Three"];
 </script>
 </body>
 </html>
