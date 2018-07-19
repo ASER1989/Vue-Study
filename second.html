@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>vue-关于computed和watch</title>
+    <script src="script/lib/vue-2.js"></script>
+    <link rel="stylesheet" href="css/full.css">
+</head>
+<body>
+<section class="table" id="second">
+    <div class="table-cell gray log-txt">
+        <p>说明：</p>
+        <p>
+            学习内容是computed和watch，两者从用途上来讲都能实现变量监听，但有很大的不同。
+        </p>
+        <p>
+            computed通常是同时监听一个或多个对象。比如FullName=firstName+lastName，会同时监听firstName和lastName。
+            如果在此使用this.log.push,则会同时监听log对象。注：当取消this.log.push的注释时，调用onLog函数会触发FullName的监听。
+        </p>
+        <p>
+            watch通常只针对一个对象作监听，watch除了能监听变量外还能监听路由。两者能力上不相等。
+        </p>
+    </div>
+    <div  class="table-cell">
+        <div>
+            <input type="text" v-model="firstName">
+        </div>
+        <div>
+            <input type="text" v-model="lastName">
+        </div>
+        <div>
+            <button class="button" @click="onLog">Log</button>
+        </div>
+        <div>
+            <p>FirstName:{{firstName}}</p>
+            <p>LastName:{{lastName}}</p>
+            <p>FullName:{{FullName}}</p>
+        </div>
+
+        <div style="margin-top:10px;box-shadow:0 0 3px #c0c0c0 inset; padding:5px 5px">
+            <p style="border-bottom:solid 1px red;padding-bottom:5px">Logs:</p>
+            <!--<p v-html="Array.prototype.concat.call(log,computedLog).join('')">-->
+            <!--</p>-->
+            <p>
+                <font color="#a0a0a0">watchTimes:</font> {{watchLog.length}}
+            </p>
+            <p>
+                <font color="red">computed:</font>{{computedLog.length}}
+            </p>
+            <p>
+                <font color="blue">Log:</font>{{log.length}}
+            </p>
+        </div>
+    </div>
+</section>
+<script type="text/javascript">
+    var app = new Vue({
+        el: "#second",
+        data: {
+            firstName: null,
+            lastName: null,
+            log: [],
+            watchLog:[],
+            computedLog: []
+        },
+        computed: {
+            FullName: function () {
+                // this.log.push("<p><font color='blue'>computed:$$</font></p>".replace("$$", +new Date()));
+                this.computedLog.push("<p><font color='blue'>computed:$$</font></p>".replace("$$", +new Date()));
+                return this.firstName + " " + this.lastName;
+            }
+        },
+        watch: {
+            firstName: function () {
+                this.watchLog.push("<p><font color='red'>watch:FirstName</font></p>");
+            },
+            lastName: function () {
+                this.watchLog.push("<p><font color='red'>watch:LastName</font></p>")
+            }
+        },
+        methods: {
+            onLog: function () {
+                this.log.push("<p>======================================</p>");
+            }
+        }
+    })
+
+</script>
+</body>
+</html>
