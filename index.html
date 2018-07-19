@@ -5,44 +5,61 @@
     <title>Vue 基础</title>
     <script src="script/lib/vue-2.js"></script>
     <link rel="stylesheet" href="./css/index.css">
+    <link rel="stylesheet" href="./css/full.css">
 </head>
 <body>
-<section id="_page">
-    <h1>{{title}}</h1>
-    <form v-on:submit="onSubmit">
-        <div>
-            <label> userName:</label>
-            <input type="text" v-model="form.userName" required>
+<section id="_page" class="table">
+    <div class="table-cell gray log-txt">
+        <p>说明：</p>
+        <p>这是第一个Vue实例，其中包含：属性绑定、事件绑定、值绑定、循环及组件的两种写法。</p>
+        <p>'v-on:' 可简写为'@'，即v-on:change='onChange' => @change='onChange'</p>
+        <p>''v-bind:' 简写为':',即v-bind:class='test' => :class='test'</p>
+        <p>默认选中：设置model的值=radio的值,不设置radio的name会出现没有单选效果的bug（是单选，但也不是单选）</p>
+        <p>组件实现v-model:</p>
+        <div class="log-layer">
+            <p>1、内部的v-model='model'中的model是当前组件中的变量model</p>
+            <p>2、通过当前组件中控件的chang（keyup，mouseover）等相关事件调用this.$emit('input',e.target.value)执行消息通知</p>
+            <p>3、组件中的value参数，主要用于组件model初始值设定</p>
         </div>
-        <div>
-            <label>jobName:</label>
-            <input type="text" v-model="form.jobName" required>
-        </div>
-        <div>
-            <label>select:</label>
-            <select v-model="form.select">
-                <option value="" disabled>请选择</option>
-                <option v-for="item in selectArray">{{item}}</option>
-            </select>
-        </div>
-        <div>
-            <label>checkBox:</label>
+    </div>
+    <div class="table-cell">
+        <h1>{{title}}</h1>
+        <form v-on:submit="onSubmit">
+            <div>
+                <label> userName:</label>
+                <input type="text" v-model="form.userName" required>
+            </div>
+            <div>
+                <label>jobName:</label>
+                <input type="text" v-model="form.jobName" required>
+            </div>
+            <div>
+                <label>select:</label>
+                <select v-model="form.select">
+                    <option value="" disabled>请选择</option>
+                    <option v-for="item in selectArray">{{item}}</option>
+                </select>
+            </div>
+            <div>
+                <label>checkBox:</label>
 
-            <check-box v-for="(item,i) in selectArray" :txt="item" v-model="form.checkbox[i]" :idx="i"></check-box>
+                <check-box v-for="(item,i) in selectArray" :txt="item" v-model="form.checkbox[i]" :idx="i"></check-box>
 
-        </div>
-        <div>
-            <label>raidos:</label>
-            <radio-el v-for="(item,i) in selectArray" :txt="item" v-model="form.radio" :idx="i" :value="form.radio"></radio-el>
-        </div>
-        <div>
-            <button type="submit">保留</button>
-        </div>
-    </form>
+            </div>
+            <div>
+                <label>raidos:</label>
+                <radio-el v-for="(item,i) in selectArray" :txt="item" v-model="form.radio" :idx="i"
+                          :value="form.radio"></radio-el>
+            </div>
+            <div>
+                <button type="submit">保留</button>
+            </div>
+        </form>
 
-    <p>
-        输入内容：{{form}}
-    </p>
+        <p>
+            输入内容：{{form}}
+        </p>
+    </div>
 </section>
 
 <template id="_radio_temp">
@@ -104,7 +121,7 @@
             title: "First Vue.js",
             form: {
                 checkbox: [],
-                radio:"Second"
+                radio: "Second"
             },
             selectArray: ["First", "Second", "Three"]
         },
