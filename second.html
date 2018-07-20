@@ -14,7 +14,7 @@
             学习内容是computed和watch，两者从用途上来讲都能实现变量监听，但有很大的不同。
         </p>
         <p>
-            computed通常是同时监听一个或多个对象。比如FullName=firstName+lastName，会同时监听firstName和lastName。
+            computed返回一个计算后的属性，通常是同时监听一个或多个对象。比如FullName=firstName+lastName，会同时监听firstName和lastName。
             如果在此使用this.log.push,则会同时监听log对象。注：当取消this.log.push的注释时，调用onLog函数会触发FullName的监听。
         </p>
         <p>
