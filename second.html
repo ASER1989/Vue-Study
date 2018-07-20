@@ -21,7 +21,7 @@
             watch通常只针对一个对象作监听，watch除了能监听变量外还能监听路由。两者能力上不相等。
         </p>
     </div>
-    <div  class="table-cell">
+    <div class="table-cell">
         <div>
             <input type="text" v-model="firstName">
         </div>
@@ -35,6 +35,7 @@
             <p>FirstName:{{firstName}}</p>
             <p>LastName:{{lastName}}</p>
             <p>FullName:{{FullName}}</p>
+            <p>Simple:{{Simple}}</p>
         </div>
 
         <div style="margin-top:10px;box-shadow:0 0 3px #c0c0c0 inset; padding:5px 5px">
@@ -60,7 +61,7 @@
             firstName: null,
             lastName: null,
             log: [],
-            watchLog:[],
+            watchLog: [],
             computedLog: []
         },
         computed: {
@@ -68,6 +69,17 @@
                 // this.log.push("<p><font color='blue'>computed:$$</font></p>".replace("$$", +new Date()));
                 this.computedLog.push("<p><font color='blue'>computed:$$</font></p>".replace("$$", +new Date()));
                 return this.firstName + " " + this.lastName;
+            },
+            Simple: {
+                get: function () {
+                    var f = this.firstName ? this.firstName[0] : "",
+                        l = this.lastName ? this.lastName[0] : "";
+
+                    return f.toUpperCase() + l.toUpperCase();
+                },
+                set: function () {
+
+                }
             }
         },
         watch: {
